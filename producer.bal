@@ -11,8 +11,10 @@ kafka:ProducerConfig producerConfigs ={
     bootstrapServers: "localhost:9092, localhost:9092" //producer localhost,
     clientId: "students",
     acks: "all",
-    retryCount: 3
-}
+    retryCount: 3;
+    valueSerializerType: kafka:SER_STRING,
+    keySerializerType: kafka:SER_INT
+};
 
 kafka:Producer kafkaProducer = new (producerConfigs);
 
