@@ -3,6 +3,7 @@ import ballerina/log;
 import ballerina/http;
 import ballerina/kafka;
 import wso2/gateway;
+import ballerina/io;
 
 
 public function main() {
