@@ -6,8 +6,6 @@ import wso2/gateway;
 import ballerina/io;
 
 
-public function main() {
-
 kafka:ProducerConfig producerConfigs ={
     bootstrapServers: "localhost:9092, localhost:9092" //producer localhost,
     clientId: "students",
@@ -82,6 +80,9 @@ enum Admin {
   HOD
 }
 
+public function main() {
+
+}
 service graphql:Service /postgraduateapi on new graphql:Listener(9092) {
 
 service  on httpListener {
