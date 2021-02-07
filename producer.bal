@@ -201,6 +201,4 @@ service  on httpListener {
     }    
 }
 }
-public function main() {
 
-}
