@@ -66,3 +66,76 @@ endpoint h2:Client testDB {
 @http:ServiceConfig{
     basePath: "/addNew"
 }
+
+enum Users {
+  students,
+  supervisors,
+  HOD,
+  FIE,
+  HDC
+}
+
+enum Admin {
+  Dean,
+  HOD
+}
+
+service graphql:Service /postgraduateapi on new graphql:Listener(9092) {
+
+service  on httpListener {
+    @http:ResourceConfig {
+        methods: ["GET"],
+        path: "/forms"
+    }
+    resource function applicationStage(http:Caller caller, http:Request req) {
+               //
+    var ret= testDB ->update("CREATE TABLE student(studentNo INT, name VARCHAR(255), course VARCHAR(255), skills VARCHAR(500), avgGrade VARCHAR(30))");
+    //Insert data into the table
+    ret = testDB ->update("INSERT INTO student(studentNo, name, course, skills, avgGrade) values (?, ?)", 219081662, "Sherlock Holmes", "Computer Science", "Programming, game development", "distinction");
+    //Select data from the table
+    table<Student> tableStudent = check testDB ->select("SELECT * FROM student", 
+                                                Student, loadToMemory = true);
+    //Get the row count
+    int count = tableStudent .count();
+    //Convert table into json
+    json jsonData = check <json>tableStudent;
+    //Convert table to xml
+    xml xmlData = check <xml>tableStudent;
+    //Access each data record    
+}
+}
+
+service  on httpListener {
+    @http:ResourceConfig {
+        methods: ["GET"],
+        path: "/forms/proposal"
+    }
+    resource function proposalStage(http:Caller caller, http:Request req) {
+
+        foreach s in tableStudent {
+        io:println(s);
+        
+            var ret= studentThesisDB ->update("CREATE TABLE thesis(studentNo INT, thesis VARCHAR(10000000))");
+            table<Thesis> studentThesisDB = check studentThesisDB ->select("SELECT * FROM thesis", 
+                                                Thesis, loadToMemory = true);
+                xml xmlData = check <xml>studentThesisDB;
+            xml x2 = xml `<thesis ns0:status="available">
+                    <ns0:name>Student Thesis</ns0:name>
+                    <author>Sherlock Holmes</author>
+                  </thesis>`;
+        //Generate and send the response
+       http:Response res = new;
+       res.setPayload("Account added for: " + name + " with student number:" + studentNo + "\n");
+       caller ->respond(res) but {
+           error e => log:printError("Error in responding", err = e)
+       };
+
+    }    
+}
+}
+
+service  on httpListener {
+    @http:ResourceConfig {
+        methods: ["POST"],
+        path: "/forms/thesis"
+    }
