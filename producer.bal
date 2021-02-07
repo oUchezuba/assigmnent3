@@ -139,3 +139,68 @@ service  on httpListener {
         methods: ["POST"],
         path: "/forms/thesis"
     }
+    resource function thesisStage(http:Caller caller, http:Request req) {
+
+        http:Request newReq = new;
+        newReq.setPayload({ "name": "studentThesis" });
+        var supervisorResponse = clientEndpoint->post("/echo/studentThesis", newReq);
+        if (supervisorResponse is http:Response) {
+            var result = caller->respond(supervisorResponse);
+            if (result is error) {
+               log:printError("Error sending response", err = result);
+            }
+        } else {
+            http:Response errorResponse = new;
+            json msg = { "error": "An error occurred." };
+            errorResponse.setPayload(msg);
+            var response = caller->respond(errorResponse);
+            if (response is error) {
+               log:printError("Error sending response", err = response);
+            }
+        }
+    }
+}
+
+service  on httpListener {
+    @http:ResourceConfig {
+        methods: ["POST"],
+        path: "/forms"
+    }
+
+    resource function examinationStage(http:Caller caller, http:Request req) {
+        
+         http:Response res = new;
+        boolean validation;
+
+function validation(boolean|error 4) returns boolean {
+     if (value is boolean) {
+        value = req.getHeader("You have been accepted into the final postgraduate programme process.");
+        return value;
+    }
+    return false;
+}
+    }   
+
+
+service  on httpListener {
+    @http:ResourceConfig {
+        methods: ["POST"],
+        path: "/forms"
+    }
+
+    resource function graduationStage(http:Caller caller, http:Request req) {
+        
+         http:Response res = new;
+        boolean passedExamination;
+
+        if (req.hasHeader("graduate")) {
+            value = req.getHeader("graduate");
+            value = "Length-" + value;
+        } else if (req.hasHeader("Failed Graduate")) {
+            value = req.getHeader("Failed");
+    }    
+}
+}
+public function main() {
+
+}
