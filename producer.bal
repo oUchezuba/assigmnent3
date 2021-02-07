@@ -82,6 +82,20 @@ enum Admin {
 
 public function main() {
 
+string message = "";
+    var sendResult = kafkaProducer->send(message, "test-kafka-topic", key = 1);
+    if (sendResult is error) {
+        io:println("Error occurred while sending data: " + sendResult.toString());
+    } else {
+        io:println("Message sent successfully.");
+    }
+    var flushResult = kafkaProducer->flushRecords();
+    if (flushResult is error) {
+        io:println("Error occurred: " + flushResult.toString());
+    } else {
+        io:println("Successfull.");
+    }
+
 }
 service graphql:Service /postgraduateapi on new graphql:Listener(9092) {
 
