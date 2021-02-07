@@ -7,7 +7,6 @@ import wso2/gateway;
 
 public function main() {
 
-}
 kafka:ProducerConfig producerConfigs ={
     bootstrapServers: "localhost:9092, localhost:9092" //producer localhost,
     clientId: "students",
@@ -201,4 +200,4 @@ service  on httpListener {
     }    
 }
 }
-
+}
