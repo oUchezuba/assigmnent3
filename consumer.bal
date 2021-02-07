@@ -7,12 +7,13 @@ import ballerina/lang;
 kafka:ConsumerConfig consumerConfigs{
     bootstrapServers: "localhost:9092"
     groupId: "students",
+    topics:["kaff"],
     pollingIntervalMills: 1000,
     keyDeserializerType: kafka:DES_INT,
     valueDeserializerType: kafka:DES_STRING,
     autoCommit: false
 
-}
+};
      Client consumer = new(consumer);
 
  listener kafka:Consumer consumer = new (consumerConfigs);
