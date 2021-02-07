@@ -83,7 +83,7 @@ enum Admin {
 public function main() {
 
 string message = "";
-    var sendResult = kafkaProducer->send(message, "test-kafka-topic", key = 1);
+    var sendResult = kafkaProducer->send(message, "kaff", key = 1);
     if (sendResult is error) {
         io:println("Error occurred while sending data: " + sendResult.toString());
     } else {
